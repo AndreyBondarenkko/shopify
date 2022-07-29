@@ -386,5 +386,5 @@ cart-drawer-items::-webkit-scrollbar-track-piece {
 
 /******** HIDE NOTIFICATION ********/
 #Details-CartDrawer {
-  display: none;
+  /* display: none; */
 }
