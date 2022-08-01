@@ -2,19 +2,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const getUserUrl = window.location.href;
   findVclid = getUserUrl.split("vclid=");
 
-  let getNoteBlock = document.querySelector("#Details-CartDrawer .cart__note"),
+  let getNoteCard = document.querySelector("#Details-CartDrawer .cart__note"),
+    getNoteDriwer = document.querySelector("#CartDrawer-Note"),
     getVclid;
 
   if (findVclid[1]) {
     getVclid = findVclid[1];
-
     /****** Add to local storege ******/
     localStorage.setItem("userVclid", getVclid);
   }
 
-  if (getNoteBlock && localStorage.getItem("userVclid") !== null) {
+  console.log(localStorage.hasOwnProperty("userVclid"));
+
+  if (getNoteCard && localStorage.hasOwnProperty("userVclid")) {
     let check = localStorage.getItem("userVclid");
-    getNoteBlock.querySelector("textarea").value = `VcLID: ${check}`;
-    //localStorage.removeItem("userVclid");
+    getNoteCard.querySelector("textarea").value = `Vclid: ${check}`;
+    localStorage.removeItem("userVclid");
   }
+
+  console.log(localStorage.hasOwnProperty("userVclid"));
 });
