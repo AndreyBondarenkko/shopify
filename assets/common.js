@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (getNoteBlock && localStorage.getItem("userVclid")) {
-    let check = localStorage.getItem("userVclid");
-    getNoteBlock.querySelector("textarea").value = `Vclid: ${check}`;
+    //let check = localStorage.getItem("userVclid");
+    //getNoteBlock.querySelector("textarea").value = `Vclid: ${check}`;
     //localStorage.removeItem("userVclid");
   }
 });
