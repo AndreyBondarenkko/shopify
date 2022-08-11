@@ -13,32 +13,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const fn = ()=>{
-    const CartDrawerNote = document.querySelector('textarea#CartDrawer-Note');
-          CartDrawerCheckout = cartDrawer.querySelector('#CartDrawer-Checkout'),
-          DetailsCartDrawer = document.querySelector('#Details-CartDrawer');
+    const cartDrawerNote = document.querySelector('textarea#CartDrawer-Note');
+          cartDrawerCheckout = cartDrawer.querySelector('#CartDrawer-Checkout'),
+          detailsCartDrawer = document.querySelector('#Details-CartDrawer');
 
     if(localStorage.hasOwnProperty("userVclid")){
-      console.log('localStorage !== null');
-      CartDrawerNote.value = `VсLID: ${localStorage.getItem("userVclid")}`;
-
-      const test = fetch(window.Shopify.routes.root + 'cart.js')
-            .then(response => response.json())
-            .then(date => {
-              date.note = `VсLID: ${localStorage.getItem("userVclid")}`;
-              return date;
-            })
+      cartDrawerNote.value = localStorage.getItem('userVclid');
     }
-    
-    DetailsCartDrawer.querySelector('summary').addEventListener('click', ()=>{ì
-      
-      const test = fetch(window.Shopify.routes.root + 'cart/update.js')
-                  .then(response => response.json())
-                  .then(date => {
-                    date.note = 'This is a note about my order';
-                    console.log(date);
-                    return date;
-                  })
-    })
+
+    cartDrawerCheckout.addEventListener('click', ()=>{
+
+      if(localStorage.hasOwnProperty("userVclid")){
+        const body = JSON.stringify({ note: localStorage.getItem('userVclid') });
+        console.log(`${routes.cart_update_url}`);
+
+        fetch(`${window.Shopify.routes.root}cart/update.js`, 
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: body
+        });
+      }
+
+    });
+
   }
 
   getBtnCartHeader.addEventListener('click', fn);
@@ -50,6 +50,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+  // const test = fetch(window.Shopify.routes.root + 'cart/update.js')
+  // .then(response => response.json())
+  // .then(date => {
+  //   date.note = 'This is a note about my order';
+  //   console.log(date);
+  //   return date;
+  // })
 
 
   // let getNoteCard = document.querySelector("#Details-CartDrawer .cart__note"),
