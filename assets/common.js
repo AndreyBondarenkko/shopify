@@ -5,12 +5,13 @@
 document.addEventListener("DOMContentLoaded", () => {
   const getUserUrl = window.location.href;
         arrUrl = getUserUrl.split("vclid="),
-        getBtnCartHeader = document.querySelector('.header .header__icon--cart'),
-        cartDrawer = document.querySelector('#CartDrawer');
+        getCartBtnGroup = document.querySelector('.product-form__buttons');
 
   if(arrUrl[1]){
     localStorage.setItem("userVclid", arrUrl[1]);
   }
+
+  
 
   const fn = ()=>{
     const cartDrawerNote = document.querySelector('textarea#CartDrawer-Note');
@@ -22,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     cartDrawerCheckout.addEventListener('click', ()=>{
+      console.log(123);
 
       if(localStorage.hasOwnProperty("userVclid")){
         const body = JSON.stringify({ note: localStorage.getItem('userVclid') });
