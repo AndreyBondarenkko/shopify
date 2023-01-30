@@ -1,0 +1,56 @@
+<script src="{{ 'faq.js' | asset_url }}" defer></script>
+{{ 'faq-section.css' | asset_url | stylesheet_tag }}
+
+<div id="faq-section" class="faq-section">
+  <div class="container">
+    <div class="grid-faq">
+      {% for block in section.blocks %}
+        {% if block.settings.question != blank or block.settings.answer != blank %}
+          <div class="items-faq">
+            <div class="faq-question">
+              {{ block.settings.question }}
+              <div class="icon">
+                <svg fill="none" viewBox="0 0 21 11" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1.75 1.125L10.5 9.875L19.25 1.125" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-content box-content">{{ block.settings.answer }}</div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Frequently Asked Question",
+  "blocks": [
+    {
+      "type": "image_picker",
+      "name": "FAQ",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Frequently Asked Question",
+      "category": "section"
+    }
+  ]
+}
+{% endschema %}
