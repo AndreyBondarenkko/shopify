@@ -6,9 +6,43 @@
         "padding_top": 28,
         "padding_bottom": 28
       }
+    },
+    "7b787cd9-5b05-49f2-aa83-954d17c1b526": {
+      "type": "section-faq",
+      "blocks": {
+        "cc163cc9-3505-4f44-8a13-5c49eeb13e7a": {
+          "type": "image_picker",
+          "settings": {
+            "question": "Add content to a webpage",
+            "answer": "<p>The rich text editor displays text in the <strong>Content<\/strong> field in the same style that it will display online. You can format your text and change the text color by choosing options in the rich text editor. You can also insert the following elements into a webpage:<\/p><p>Learn more about the <a href=\"https:\/\/help.shopify.com\/en\/manual\/shopify-admin\/productivity-tools\/rich-text-editor\">rich text editor<\/a>.<\/p><p>To edit the HTML code for the page, click the <strong>Show HTML<\/strong> button to view the HTML and make changes:<\/p>"
+          }
+        },
+        "9e6ebf0f-e943-47ce-8202-49ee78572815": {
+          "type": "image_picker",
+          "settings": {
+            "question": "Add a Google map to a webpage",
+            "answer": "<p>You can add a Google map for an address to a webpage in your online store. For example, it's a good idea to add a map to your <strong>About us<\/strong> page to show your retail location:<\/p>"
+          }
+        },
+        "43f91ba7-46a7-4b10-89f8-01f391bd90b4": {
+          "type": "image_picker",
+          "settings": {
+            "question": "Publish or unpublish webpages in bulk",
+            "answer": "<p>You can control the webpages that are published to your online store using the<strong>Actions<\/strong>drop-down menu in Shopify. This lets you publish or unpublish many webpages at once, which is beneficial if you're coming to Shopify from another ecommerce platform or website, or if you're uploading a series of pre-written documents.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "cc163cc9-3505-4f44-8a13-5c49eeb13e7a",
+        "9e6ebf0f-e943-47ce-8202-49ee78572815",
+        "43f91ba7-46a7-4b10-89f8-01f391bd90b4"
+      ],
+      "settings": {
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "7b787cd9-5b05-49f2-aa83-954d17c1b526"
   ]
 }
