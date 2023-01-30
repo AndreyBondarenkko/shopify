@@ -39,6 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
   getBtnCartHeader.addEventListener("click", fn);
 });
 
+/* ========================================
+  Inpur range
+======================================== */
 function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
   const [from, to] = getParsed(fromInput, toInput);
   fillSlider(fromInput, toInput, "#C6C6C6", "#25daa5", controlSlider);
