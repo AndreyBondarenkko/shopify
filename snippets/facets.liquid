@@ -1123,7 +1123,6 @@
 <price-range class="facets__price sliders_control">
   <span class="field-currency">{{ cart.currency.symbol }}</span>
   <input
-    class="field__input"
     name="{{ filter.min_value.param_name }}"
     id="fromSlider"
     {%- if filter.min_value.value -%}
@@ -1143,7 +1142,6 @@
     {% endif %}
   >
   <input
-    class="field__input"
     name="{{ filter.max_value.param_name }}"
     id="toSlider"
     {%- if filter.max_value.value -%}
