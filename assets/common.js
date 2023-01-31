@@ -135,4 +135,4 @@ const inputWrapper = document.querySelector(".for_js");
 const inpMin = inputWrapper.querySelector("input.min");
 const inpMax = inputWrapper.querySelector("input.max");
 
-console.log(inpMin, inpMax);
+console.log("min : ", inpMin, "max : ", inpMax);
