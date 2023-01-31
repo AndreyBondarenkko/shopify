@@ -1151,21 +1151,27 @@
   <input
     сlass="min"
     name="{{ filter.min_value.param_name }}"
-    id="fromSlider"
+    id="Filter-{{ filter.label | escape }}-GTE"
     type="range"
     placeholder="0"
-    min="0"
+    {%- if filter.min_value.value -%}
+      {%- if uses_comma_decimals -%}
+        value="{{ filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+      {%- else -%}
+        value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+      {%- endif %}
+    {%- endif -%}
     {%- if uses_comma_decimals -%}
-      max="{{ filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+      max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
     {%- else -%}
-      max="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+      max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
     {% endif %}
   >
 
   <input
     class="max"
     name="{{ filter.max_value.param_name }}"
-    id="toSlider"
+    id="Filter-{{ filter.label | escape }}-LTE"
     {%- if filter.max_value.value -%}
       {%- if uses_comma_decimals -%}
         value="{{ filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
@@ -1174,14 +1180,12 @@
       {%- endif %}
     {%- endif -%}
     type="range"
+    min="0"
     {%- if uses_comma_decimals -%}
-      min="{{ filter.range_min | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
-    {%- else -%}
-      min="{{ filter.range_min | money_without_currency | replace: ',', '' }}"
-    {% endif %}
-    {%- if uses_comma_decimals -%}
+      placeholder="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
       max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
     {%- else -%}
+      placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
       max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
     {% endif %}
   >
