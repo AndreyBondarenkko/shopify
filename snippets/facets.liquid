@@ -1122,6 +1122,7 @@
 
 <price-range class="facets__price ">
   <input
+    сlass="min"
     name="{{ filter.min_value.param_name }}"
     id="fromSlider"
     type="range"
@@ -1135,6 +1136,7 @@
   >
 
   <input
+    class="max"
     name="{{ filter.max_value.param_name }}"
     id="toSlider"
     {%- if filter.max_value.value -%}
