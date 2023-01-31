@@ -27,7 +27,7 @@
   window.assetsUrl = '{{ assets_url[0] }}';
   window.filesUrl = '{{ files_url[0] }}';
   var page_id = {% if request.page_type contains 'collection' %}{% if collection.id %}{{collection.id | default: 1}}{% else %}1{% endif %}{% elsif request.page_type contains 'search' %}2{% else %}0{% endif %};
-  var globo_filters_json = {"default":3458}
+  var globo_filters_json = {"default":0,"270460420209":3458}
   var GloboFilterConfig = {
     api: {
       filterUrl: "https://filter-v8.globosoftware.net/filter",
