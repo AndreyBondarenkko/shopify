@@ -1152,10 +1152,8 @@
       min="{{ filter.range_min | money_without_currency | replace: ',', '' }}"
     {% endif %}
     {%- if uses_comma_decimals -%}
-      placeholder="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
       max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
     {%- else -%}
-      placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
       max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
     {% endif %}
   >
