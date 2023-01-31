@@ -3070,7 +3070,7 @@ input[type="range"] {
   margin: 35% auto;
 }
 
-.sliders_control {
+/* .sliders_control {
   position: relative;
   min-height: 50px;
 }
@@ -3140,4 +3140,4 @@ input[type="range"] {
 .sliders_control #fromSlider {
   height: 0;
   z-index: 1;
-}
+} */
