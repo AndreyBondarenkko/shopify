@@ -130,3 +130,9 @@ document.addEventListener("DOMContentLoaded", () => {
 // fromInput.oninput = () =>
 //   controlFromInput(fromSlider, fromInput, toInput, toSlider);
 // toInput.oninput = () => controlToInput(toSlider, fromInput, toInput, toSlider);
+
+const inputWrapper = document.querySelector(".for_js");
+const inpMin = inputWrapper.querySelector("input.min");
+const inpMax = inputWrapper.querySelector("input.max");
+
+console.log(inpMin, inpMax);
