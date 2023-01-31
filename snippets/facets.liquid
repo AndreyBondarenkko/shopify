@@ -1125,22 +1125,16 @@
   <input
     name="{{ filter.min_value.param_name }}"
     id="fromSlider"
-    {%- if filter.min_value.value -%}
-      {%- if uses_comma_decimals -%}
-        value="{{ filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
-      {%- else -%}
-        value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
-      {%- endif %}
-    {%- endif -%}
     type="range"
     placeholder="0"
     min="0"
     {%- if uses_comma_decimals -%}
-      max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+      max="{{ filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
     {%- else -%}
-      max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+      max="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
     {% endif %}
   >
+
   <input
     name="{{ filter.max_value.param_name }}"
     id="toSlider"
