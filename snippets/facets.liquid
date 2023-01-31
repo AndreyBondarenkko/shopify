@@ -338,12 +338,13 @@
                           </facet-remove>
                         {%- endif -%}
                       </div>
-                      <price-range class="facets__price 123123">
+
+                      <price-range class="facets__price sliders_control">
                         <span class="field-currency">{{ cart.currency.symbol }}</span>
                         <div class="field">
                           <input
-                            class="field__input"
-                            name="{{ filter.min_value.param_name }}"
+                            id="fromSlider"
+                            type="range"
                             id="Filter-{{ filter.label | escape }}-GTE"
                             {%- if filter.min_value.value -%}
                               {%- if uses_comma_decimals -%}
@@ -352,14 +353,13 @@
                                 value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
                               {%- endif %}
                             {%- endif -%}
-                            type="number"
-                            placeholder="0"
                             min="0"
                             {%- if uses_comma_decimals -%}
                               max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
                             {%- else -%}
                               max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
                             {% endif %}
+                            max="100"
                           >
                           <label class="field__label" for="Filter-{{ filter.label | escape }}-GTE">
                             {{- 'products.facets.from' | t -}}
@@ -370,8 +370,8 @@
                         {%- endif -%}
                         <div class="field">
                           <input
-                            class="field__input"
-                            name="{{ filter.max_value.param_name }}"
+                            id="toSlider"
+                            type="range"
                             id="Filter-{{ filter.label | escape }}-LTE"
                             {%- if filter.max_value.value -%}
                               {%- if uses_comma_decimals -%}
@@ -380,7 +380,6 @@
                                 value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
                               {%- endif %}
                             {%- endif -%}
-                            type="number"
                             min="0"
                             {%- if uses_comma_decimals -%}
                               placeholder="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
@@ -776,13 +775,13 @@
                             {{ 'products.facets.max_price' | t: price: max_price_amount }}
                           </p>
 
-                          <price-range class="facets__price sliders_control">
+                          <price-range class="facets__price">
                             <span class="field-currency">{{ cart.currency.symbol }}</span>
                             <div class="field">
                               <input
-                                id="fromSlider"
-                                type="range"
-                                id="Filter-{{ filter.label | escape }}-GTE"
+                                class="field__input"
+                                name="{{ filter.min_value.param_name }}"
+                                id="Mobile-Filter-{{ filter.label | escape }}-GTE"
                                 {%- if filter.min_value.value -%}
                                   {%- if uses_comma_decimals -%}
                                     value="{{ filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
@@ -790,13 +789,15 @@
                                     value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
                                   {%- endif %}
                                 {%- endif -%}
+                                type="number"
+                                placeholder="0"
                                 min="0"
+                                inputmode="decimal"
                                 {%- if uses_comma_decimals -%}
                                   max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
                                 {%- else -%}
                                   max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
                                 {% endif %}
-                                max="100"
                               >
                               <label class="field__label" for="Mobile-Filter-{{ filter.label | escape }}-GTE">
                                 {{- 'products.facets.from' | t -}}
@@ -806,9 +807,9 @@
                             <span class="field-currency">{{ cart.currency.symbol }}</span>
                             <div class="field">
                               <input
-                                id="toSlider"
-                                type="range"
-                                id="Filter-{{ filter.label | escape }}-LTE"
+                                class="field__input"
+                                name="{{ filter.max_value.param_name }}"
+                                id="Mobile-Filter-{{ filter.label | escape }}-LTE"
                                 {%- if filter.max_value.value -%}
                                   {%- if uses_comma_decimals -%}
                                     value="{{ filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
@@ -816,7 +817,9 @@
                                     value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
                                   {%- endif %}
                                 {%- endif -%}
+                                type="number"
                                 min="0"
+                                inputmode="decimal"
                                 {%- if uses_comma_decimals -%}
                                   placeholder="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
                                   max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
