@@ -227,6 +227,24 @@
         "padding_bottom": 36
       }
     },
+    "1679332918c8b1bbf9": {
+      "type": "apps",
+      "blocks": {
+        "ba629b9e-3369-4b05-b32e-b1f9b8851723": {
+          "type": "shopify:\/\/apps\/xo-gallery\/blocks\/xo-gallery\/e61dfbaa-1a75-4e4e-bffc-324f17325251",
+          "settings": {
+            "type": "gallery",
+            "id": 2
+          }
+        }
+      },
+      "block_order": [
+        "ba629b9e-3369-4b05-b32e-b1f9b8851723"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
     "1658839316f1cd239d": {
       "type": "featured-blog",
       "settings": {
@@ -253,6 +271,7 @@
     "collage",
     "video",
     "multicolumn",
+    "1679332918c8b1bbf9",
     "1658839316f1cd239d"
   ]
 }
