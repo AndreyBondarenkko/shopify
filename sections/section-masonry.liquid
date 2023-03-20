@@ -1,0 +1,16 @@
+{{ 'masonry-section.css' | asset_url | stylesheet_tag }}
+
+<div class="masonry-section"></div>
+
+<script src="{{ 'masonry-section.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Masonry Section",
+  "presets": [
+    {
+      "name": "Masonry Section"
+    }
+  ]
+}
+{% endschema %}
