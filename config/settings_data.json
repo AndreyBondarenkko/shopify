@@ -194,7 +194,21 @@
     },
     "content_for_index": [
 
-    ]
+    ],
+    "blocks": {
+      "14684659138027382045": {
+        "type": "shopify:\/\/apps\/xo-gallery\/blocks\/xo-gallery-scripts\/e61dfbaa-1a75-4e4e-bffc-324f17325251",
+        "disabled": false,
+        "settings": {
+        }
+      },
+      "7770194999415187106": {
+        "type": "shopify:\/\/apps\/xo-gallery\/blocks\/xo-gallery-seo\/e61dfbaa-1a75-4e4e-bffc-324f17325251",
+        "disabled": false,
+        "settings": {
+        }
+      }
+    }
   },
   "presets": {
     "Default": {
