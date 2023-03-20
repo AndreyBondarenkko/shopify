@@ -105,6 +105,24 @@
         "padding_bottom": 36
       }
     },
+    "16793322191c4bf020": {
+      "type": "apps",
+      "blocks": {
+        "a562b2a6-63d5-4d0c-b0d2-4992bf58eac8": {
+          "type": "shopify:\/\/apps\/xo-gallery\/blocks\/xo-gallery\/e61dfbaa-1a75-4e4e-bffc-324f17325251",
+          "settings": {
+            "type": "gallery",
+            "id": 1
+          }
+        }
+      },
+      "block_order": [
+        "a562b2a6-63d5-4d0c-b0d2-4992bf58eac8"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
     "collage": {
       "type": "collage",
       "blocks": {
@@ -231,6 +249,7 @@
     "image_banner",
     "rich_text",
     "featured_collection",
+    "16793322191c4bf020",
     "collage",
     "video",
     "multicolumn",
