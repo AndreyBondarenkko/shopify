@@ -66,7 +66,9 @@
           {{translation.sort.date_old_to_new | default: "Date, old to new"}}
         {% elsif sort_by == 'sale-descending' %}
           {{translation.sort.sale_off | default: "% Sale off"}}
-                {% endif %}
+        {% else %}
+          {{sort | replace: "-", " " | capitalize}}
+        {% endif %}
       {% endcapture %}
       {% comment %}
       <div class="sort-by">
@@ -112,7 +114,9 @@
               <span data-sort="created-ascending" onclick="changeSortBy('created-ascending');">{{translation.sort.date_old_to_new | default: "Date, old to new"}}</span>
             {% elsif sort == 'sale-descending' %}
               <span data-sort="sale-descending" onclick="changeSortBy('sale-descending');">{{translation.sort.sale_off | default: "% Sale off"}}</span>
-                        {% endif %}
+            {% else %}
+              <span data-sort="{{sort}}" onclick="changeSortBy('{{sort}}');">{% if translation.sort[sort] %}{{translation.sort[sort]}}{% else %}{{sort | replace: "-", " " | capitalize}}{% endif %}</span>
+            {% endif %}
           {% endfor %}
         </div>
       </div>
