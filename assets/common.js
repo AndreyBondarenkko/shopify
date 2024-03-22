@@ -131,8 +131,100 @@
 //   controlFromInput(fromSlider, fromInput, toInput, toSlider);
 // toInput.oninput = () => controlToInput(toSlider, fromInput, toInput, toSlider);
 
-const inputWrapper = document.querySelector(".for_js");
-const inpMin = inputWrapper.querySelector("input.min");
-const inpMax = inputWrapper.querySelector("input.max");
+// const inputWrapper = document.querySelector(".for_js");
+// const inpMin = inputWrapper.querySelector("input.min");
+// const inpMax = inputWrapper.querySelector("input.max");
 
-console.log("min : ", inpMin, "max : ", inpMax);
+// console.log("min : ", inpMin, "max : ", inpMax);
+
+
+/* ==========================
+  Cart
+========================== */
+document.addEventListener('DOMContentLoaded', () => {
+  const body = document.querySelector('body');
+
+  const isOpenCart = document.querySelector('#is-open-cart');
+  const cartDrawer = document.querySelector('#cart-drawer');
+  const isCloseCart = cartDrawer?.querySelector('.cart-close');
+  const isOutCart = cartDrawer?.querySelector('.cart-drawer-overflow');
+
+  isOpenCart?.addEventListener('click', () => body.classList.add('cart-opened'));
+  isCloseCart?.addEventListener('click', () => body.classList.remove('cart-opened'))
+  isOutCart?.addEventListener('click', () => body.classList.remove('cart-opened'))
+
+  const getSectionToRender = [
+    {
+      id: '#cart-drawer',
+      file: 'cart-drawer-custom',
+    },
+  ];
+
+  const updateCart = (id, quantity, action) => {
+    const data = {
+      "updates": {},
+      sections: getSectionToRender.map((section) => section.file),
+      sections_url: window.location.pathname
+    };
+
+    if (action === 'update') {
+      data['updates'][id] = quantity;
+    } else {
+      data['id'] = id;
+      data['quantity'] = quantity;
+    }
+
+    fetch(`${window.Shopify.routes.root}cart/${action}.js`, {
+      ...fetchConfig(),
+      body: JSON.stringify(data)
+    })
+
+      .then(response => {
+        return response.json();
+      })
+
+      .then(reject => {
+        cartDrawer.classList.toggle('cart-is-empty', reject.items.length === 0);
+        const sectionElement = document.querySelector(getSectionToRender[0].id);
+
+        sectionElement.innerHTML = new DOMParser()
+          .parseFromString(reject.sections["cart-drawer-custom"], 'text/html')
+          .querySelector(getSectionToRender[0].id).innerHTML;
+      })
+
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+  const cartRemove = (product) => {
+    const productID = product.getAttribute('data-variant-id');
+    updateCart(productID, 0, 'update')
+  }
+
+  const cartQuantity = (product) => {
+    const productID = product.getAttribute('data-variant-id');
+    const productQuantity = product.querySelector('.quantity');
+
+    updateCart(productID, +productQuantity.querySelector('.quantity__input').value, 'change');
+  }
+
+  cartDrawer.addEventListener('click', ({ target }) => {
+    let product;
+
+    if (target.closest('.cart-product')) {
+      product = target.closest('.cart-product')
+    }
+
+    if (target.classList.contains('button-remove')) {
+      cartRemove(product);
+    }
+
+    if (target.classList.contains('quantity__button')) {
+      const buttonName = target.getAttribute('name');
+      cartQuantity(product, buttonName);
+    }
+  });
+
+});
+

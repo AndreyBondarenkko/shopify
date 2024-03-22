@@ -1,0 +1,13 @@
+{
+    "scripts": {
+        "watch": "unilime-shopify-theme watch --no-webpack",
+        "watch:dev": "cross-env NODE_ENV=development2 unilime-shopify-theme watch --no-webpack",
+        "build": "unilime-shopify-theme webpack --mode=production",
+        "pull": "unilime-shopify-theme shopify theme pull"
+    },
+    "private": true,
+    "devDependencies": {
+        "@unilime/shopify-theme-dev": "^1.0.5",
+        "cross-env": "^7.0.3"
+    }
+}
