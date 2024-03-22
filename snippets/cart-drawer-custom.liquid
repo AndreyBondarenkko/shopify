@@ -1,0 +1,100 @@
+<div class="cart-drawer-wrap">
+  <div class="cart-drawer-overflow"></div>
+  <div id="cart-drawer" class="cart-drawer {% if cart == empty %} cart-is-empty{% endif %}">
+    <div class="cart-header">
+      <div class="cart-title">Cart</div>
+      <button class="cart-close button-hover">{% render 'icons', icon: 'icon-close' %}</button>
+    </div>
+    <div class="cart-body">
+      <div class="empty-text">Your cart is empty</div>
+      <div class="product-items" id="{{ section.id }}">
+        {% for item in cart.items %}
+          <div class="cart-product" poduct-name="{{ item.title }}" data-index="{{ item.index | plus: 1 }}"
+            id="{{ item.product.id }}" data-variant-id="{{ item.variant.id }}" data-index="{{ item.index | plus: 1 }}">
+            <div class="image">
+              <img class="cart-item__image"
+                  src="{{ item.image | image_url: width: 220 }}"
+                  alt="{{ item.image.alt | escape }}"
+                  loading="lazy" width="110"
+                  height="{{ 150 | divided_by: item.image.aspect_ratio | ceil }}">
+            </div>
+            <div class="info">
+              <div class="product-title">{{ item.product.title }}</div>
+              {%- liquid
+                if use_variant
+                    assign target = item.product.selected_or_first_available_variant
+                else
+                    assign target = item.product
+                endif
+  
+                assign compare_at_price = target.compare_at_price
+                assign price = target.price | default: 1999
+                assign available = target.available | default: false
+                assign money_price = price | money
+                if settings.currency_code_enabled
+                    assign money_price = price | money_with_currency
+                endif
+  
+                if target == product and product.price_varies
+                    assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+                endif
+              -%}
+              <div class="product-price {%- if available == false %} price--sold-out {% endif -%} {%- if compare_at_price > price %} price--on-sale {% endif -%}
+                {%- if product.price_varies == false and product.compare_at_price_varies %} price--no-compare{% endif -%}">
+                <div class="price__sale-wrap">
+                    <div class="price__sale">
+                        {%- unless product.price_varies == false and product.compare_at_price_varies %}
+                            <span class="price price-total price-item price-item--sale price-item--last"> {{ money_price }} </span>
+                            <span class="devider">-</span>
+                            <span class="price price-with-sale price-item price-item--regular">
+                            {% if settings.currency_code_enabled %}
+                                {{ compare_at_price | money_with_currency }}
+                            {% else %}
+                                {{ compare_at_price | money }}
+                            {% endif %}
+                        </span>
+                        {%- endunless -%}
+                    </div>
+                </div>
+                <div class="price__regular">
+                    <span class="price price-total price-item price-item--regular">{{ money_price }}</span>
+                </div>
+              </div>
+  
+              <div class="product-group">
+                <div class="product-form__quantity">
+                  <quantity-input class="quantity">
+                    <button class="quantity__button button-hover" name="minus" type="button">
+                      {% render 'icons', icon: 'icon-minus' %}
+                    </button>
+                    
+                    <input class="quantity__input" type="number" name="quantity" disabled
+                      min="1" value="{{ item.quantity }}">
+  
+                    <button class="quantity__button button-hover" name="plus" type="button">
+                      {% render 'icons', icon: 'icon-plus' %}
+                    </button>
+                  </quantity-input>
+                </div>
+  
+                <button class="button-remove button-hover">
+                  {% render 'icons', icon:'icon-close' %}
+                </button>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="cart-bottom" {% if cart == empty %} style="display:none;"{% endif %}>
+      <div class="cart-totals" id="cart-totals" role="status">
+        <h2 class="cart-totals-title">Subtotal:</h2>
+        <p class="cart-totals-value">{{ cart.total_price | money_with_currency }}</p>
+      </div>
+
+      <button class="cart-checkout" {% if cart == empty %} disabled{% endif %}>
+        <span>Checkout</span>
+      </button>
+    </div>
+  </div>
+</div>
