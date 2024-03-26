@@ -6,7 +6,20 @@
       <button class="cart-close button-hover">{% render 'icons', icon: 'icon-close' %}</button>
     </div>
     <div class="cart-body">
+
+      <div class="gift-wrap">
+        <div class="gift-title">You are <span class="gift-price">$50</span> awat from getting a Free gift</div>
+        <div class="line">
+          <span class="line-active"></span>
+          <span class="icon">
+            {% render 'icons', icon: 'icon-border' %}
+            {% render 'icons', icon: 'icon-gift' %}
+          </span>
+        </div>
+      </div>
+      
       <div class="empty-text">Your cart is empty</div>
+      
       <div class="product-items" id="product-items">
         {% for item in cart.items %}
  

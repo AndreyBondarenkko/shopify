@@ -188,6 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cartTotal.innerHTML = new DOMParser()
           .parseFromString(reject.sections["cart-drawer-custom"], 'text/html')
+          .querySelector('#cart-totals').innerHTML;
       })
 
       .catch((error) => {
