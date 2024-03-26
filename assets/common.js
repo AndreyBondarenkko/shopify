@@ -146,24 +146,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const isOpenCart = document.querySelector('#is-open-cart');
   const cartDrawer = document.querySelector('#cart-drawer');
-  const isCloseCart = cartDrawer?.querySelector('.cart-close');
-  const isOutCart = cartDrawer?.querySelector('.cart-drawer-overflow');
+  const isCloseCart = cartDrawer.querySelector('.cart-close');
+  const isOutCart = document.querySelector('.cart-drawer-overflow');
+
+  const cartTotal = cartDrawer.querySelector('#cart-totals');
+  const cartProducts = cartDrawer.querySelector('#product-items');
 
   isOpenCart?.addEventListener('click', () => body.classList.add('cart-opened'));
   isCloseCart?.addEventListener('click', () => body.classList.remove('cart-opened'))
   isOutCart?.addEventListener('click', () => body.classList.remove('cart-opened'))
 
-  const getSectionToRender = [
-    {
-      id: '#cart-drawer',
-      file: 'cart-drawer-custom',
-    },
-  ];
-
   const updateCart = (id, quantity, action) => {
     const data = {
       "updates": {},
-      sections: getSectionToRender.map((section) => section.file),
+      sections: ["cart-drawer-custom"],
       sections_url: window.location.pathname
     };
 
@@ -185,11 +181,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       .then(reject => {
         cartDrawer.classList.toggle('cart-is-empty', reject.items.length === 0);
-        const sectionElement = document.querySelector(getSectionToRender[0].id);
 
-        sectionElement.innerHTML = new DOMParser()
+        cartProducts.innerHTML = new DOMParser()
           .parseFromString(reject.sections["cart-drawer-custom"], 'text/html')
-          .querySelector(getSectionToRender[0].id).innerHTML;
+          .querySelector('#product-items').innerHTML;
+
+        cartTotal.innerHTML = new DOMParser()
+          .parseFromString(reject.sections["cart-drawer-custom"], 'text/html')
       })
 
       .catch((error) => {

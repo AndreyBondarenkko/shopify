@@ -7,8 +7,9 @@
     </div>
     <div class="cart-body">
       <div class="empty-text">Your cart is empty</div>
-      <div class="product-items" id="{{ section.id }}">
+      <div class="product-items" id="product-items">
         {% for item in cart.items %}
+ 
           <div class="cart-product" poduct-name="{{ item.title }}" data-index="{{ item.index | plus: 1 }}"
             id="{{ item.product.id }}" data-variant-id="{{ item.variant.id }}" data-index="{{ item.index | plus: 1 }}">
             <div class="image">
@@ -71,7 +72,7 @@
                     <input class="quantity__input" type="number" name="quantity" disabled
                       min="1" value="{{ item.quantity }}">
   
-                    <button class="quantity__button button-hover" name="plus" type="button">
+                    <button class="quantity__button button-hover" name="plus" type="button" {% if item.variant.inventory_quantity <= item.quantity %} disabled="disabled"{% endif %}>
                       {% render 'icons', icon: 'icon-plus' %}
                     </button>
                   </quantity-input>
