@@ -270,8 +270,21 @@
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
+    <script type="text/javascript">
+      window.free_gift_settings = {
+        active: {% if settings.free_gift_active %}true{% else %}false{% endif %},
+        product: {% if settings.free_gift_product %}{{ settings.free_gift_product.selected_or_first_available_variant.id }}{% else %}false{% endif %},
+        price: {% if settings.free_gift_product %}{{ settings.free_gift_product.price | money_without_currency }}{% else %}0{% endif %},
+        threshold: "{{ settings.free_gift_threshold }}"
+      };
 
+      window.cart = {
+        "cart-items": {{ cart.items | json }},
+        "cart-price": {{ cart.total_price | money_without_currency | plus: 0 }},
+      };
+    </script>
+    <script src="{{ 'shopify-money.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'common.js' | asset_url }}" defer="defer"></script>
-  {% include 'globo.filter.action' %}
+    {% include 'globo.filter.action' %}
 	</body>
 </html>
