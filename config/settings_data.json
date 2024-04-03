@@ -1,5 +1,8 @@
 {
   "current": {
+    "free_gift_active": true,
+    "free_gift_product": "bo-ivy",
+    "free_gift_threshold": 100,
     "colors_solid_button_labels": "#ffffff",
     "colors_accent_1": "#121212",
     "gradient_accent_1": "",
