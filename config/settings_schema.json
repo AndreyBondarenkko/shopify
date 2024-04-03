@@ -8,6 +8,30 @@
     "theme_support_url": "https:\/\/support.shopify.com\/"
   },
   {
+    "name": "Free Gift",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Free Gift"
+      },
+      {
+        "type": "checkbox",
+        "id": "free_gift_active",
+        "label": "Free Gift Active"
+      },
+      {
+        "type": "product",
+        "id": "free_gift_product",
+        "label": "Gift Product"
+      },
+      {
+        "type": "number",
+        "id": "free_gift_threshold",
+        "label": "Minimum Spend (dollars)"
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.colors.name",
     "settings": [
       {
