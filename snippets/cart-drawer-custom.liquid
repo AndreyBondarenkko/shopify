@@ -12,7 +12,7 @@
       {% assign difference = free_gift_threshold | minus: cart_total %}
       {% assign percent_bought = cart_total | times: 100 | divided_by: free_gift_threshold | floor %}
 
-      <div class="gift-wrap">
+      <div class="gift-wrap {% unless settings.free_gift_active %}hidden{% endunless %}">
         <div class="gift-title"> 
           {% if cart_total <= free_gift_threshold %}
             You are <span class="gift-price 1">${{ difference }}</span> away from getting a gift.
@@ -37,7 +37,7 @@
         {% for item in cart.items %}
  
           <div class="cart-product" poduct-name="{{ item.title }}" data-index="{{ item.index | plus: 1 }}"
-            id="{{ item.product.id }}" data-variant-id="{{ item.variant.id }}" data-index="{{ item.index | plus: 1 }}">
+            id="{{ item.product.id }}" data-product-key="{{ item.key }}" data-index="{{ item.index | plus: 1 }}">
             <div class="image">
               <img class="cart-item__image"
                   src="{{ item.image | image_url: width: 220 }}"
@@ -106,8 +106,7 @@
                       {% render 'icons', icon: 'icon-minus' %}
                     </button>
                     
-                    <input class="quantity__input" type="number" name="quantity" disabled
-                      min="0" value="{{ item.quantity }}">
+                    <input class="quantity__input" type="number" name="quantity" disabled min="0" value="{{ item.quantity }}">
   
                     <button class="quantity__button button-hover" name="plus" type="button" {% if item.variant.inventory_quantity <= item.quantity %} disabled="disabled"{% endif %}>
                       {% render 'icons', icon: 'icon-plus' %}

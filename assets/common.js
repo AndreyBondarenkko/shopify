@@ -21,54 +21,44 @@ document.addEventListener('DOMContentLoaded', () => {
   let removePrice = 0;
   let priceBeforeChenges = 0;
   let cartProducts = window.cart["cart-items"];
-  let cartCurrentPrice = +window.cart["cart-price"];
+  let cartTotalPrice = +window.cart["cart-price"];
   const threshold = +window.free_gift_settings.threshold;
   const productGIFT = window.free_gift_settings.product;
-  const productGiftPrice = +window.free_gift_settings.price;
 
   const giftProduct = (hundleClick) => {
-    console.log('add or remove gift product')
     const hasProduct = cartProducts.some(product => product.variant_id === productGIFT);
 
-    console.log('hasProduct', hasProduct);
-    console.log('minus', (priceBeforeChenges - minusPrice).toFixed(2));
-
-
     if (hundleClick === 'minus' && hasProduct == true && (priceBeforeChenges - minusPrice).toFixed(2) < threshold) {
-      console.log('minus :');
       updateCart(productGIFT, 0, 'update')
     }
 
-    if (hundleClick === 'plus' && hasProduct == false && (cartCurrentPrice + plusPrice).toFixed(2) > threshold) {
-      console.log('plus :');
+    if (hundleClick === 'plus' && hasProduct == false && (priceBeforeChenges + plusPrice).toFixed(2) > threshold) {
       updateCart(productGIFT, 1, 'add')
     }
 
-    if (hundleClick === 'remove' && hasProduct == true && (cartCurrentPrice - removePrice).toFixed(2) < threshold) {
-      console.log('remove')
+    if (hundleClick === 'remove' && hasProduct == true && (cartTotalPrice - removePrice).toFixed(2) < threshold) {
       updateCart(productGIFT, 0, 'update')
     }
   }
 
-  const refreshGiftPrice = (hundleClick) => {
-    console.log('refreshGiftPrice');
-    let difference = 0;
-    let percent_bought = 100;
+  const updateGiftPrice = (hundleClick) => {
+    const hasProduct = cartProducts.some(product => product.variant_id === productGIFT);
+    let giftPriceDifference = 0;
+    let percentBought = 100;
 
-    if (cartCurrentPrice < threshold) {
-      difference = (threshold - cartCurrentPrice).toFixed(2);
-      percent_bought = Math.floor((cartCurrentPrice * 100) / threshold).toFixed(0);
+    if (cartTotalPrice < threshold && !hasProduct) {
+      giftPriceDifference = (threshold - cartTotalPrice).toFixed(2);
+      percentBought = Math.floor((cartTotalPrice * 100) / threshold).toFixed(0);
     }
 
-    cartDrawer.querySelector('.gift-price').innerHTML = `$${difference}`;
-    cartDrawer.querySelector('.line-active').style.width = `${percent_bought}%`;
+    cartDrawer.querySelector('.gift-price').innerHTML = `$${giftPriceDifference}`;
+    cartDrawer.querySelector('.line-active').style.width = `${percentBought}%`;
 
     giftProduct(hundleClick);
   }
 
   /* reload visual data  */
   const getSectionInnerHTML = (data) => {
-    console.log('refresh cart layout')
     cartProductsLayout.innerHTML = new DOMParser()
       .parseFromString(data, 'text/html')
       .querySelector('#product-items').innerHTML;
@@ -79,9 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* Fetch */
-  const updateCart = (id, quantity, action, hundleClick = null, price = 0) => {
-    console.log('action:', action);
-
+  const updateCart = (id, quantity, action, hundleClick = false, price = 0) => {
     const data = {
       "updates": {},
       "items": [],
@@ -91,48 +79,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (action !== 'add' && action === 'update' && action !== 'change') {
       data['updates'][id] = quantity
-      console.log('fetch event: update.js')
     }
 
     if (action === 'add' && action !== 'update' && action !== 'change') {
       data['items'].push({ 'id': id, 'quantity': quantity })
-      console.log('fetch event: add.js')
     }
 
     if (action !== 'add' && action !== 'update' && action === 'change') {
       data['id'] = id;
       data['quantity'] = quantity;
-      console.log('fetch event: change.js')
     }
-
-    console.log(data)
 
     fetch(`${window.Shopify.routes.root}cart/${action}.js`, { ...fetchConfig(), body: JSON.stringify(data) })
       .then(response => response.json())
       .then(response => {
         cartDrawer.classList.toggle('cart-is-empty', response.items.length === 0);
 
-        console.log('1')
-
         getSectionInnerHTML(response.sections["cart-drawer-custom"]);
 
-        if (hundleClick !== null) {
-          hundleClick === 'minus' && hundleClick !== 'remove' ? minusPrice = price : plusPrice = price;
-          hundleClick === 'remove' && hundleClick !== 'minus' && hundleClick !== 'plus'
-            ? removePrice = price : '';
+        if (hundleClick && !window.free_gift_settings.action) return;
 
-          priceBeforeChenges = cartCurrentPrice;
-          cartCurrentPrice = Number(Shopify.formatMoney(response.total_price));
-          cartProducts = response.items;
+        hundleClick === 'minus' && hundleClick !== 'remove' ? minusPrice = price : plusPrice = price;
+        hundleClick === 'remove' && hundleClick !== 'minus' && hundleClick !== 'plus'
+          ? removePrice = price : '';
 
-          console.log('2')
+        priceBeforeChenges = cartTotalPrice;
+        cartTotalPrice = Number(Shopify.formatMoney(response.total_price));
+        cartProducts = response.items;
 
-          if (response.items.length >= 1 || threshold !== 0 || window.free_gift_settings.action) {
-            console.log('3')
-            refreshGiftPrice(hundleClick);
-          }
-        }
+        if (response.items.length < 1) return;
+        updateGiftPrice(hundleClick);
       })
+
       .catch((error) => {
         console.error('Error:', error);
       });
@@ -140,41 +118,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* remove product function */
   const cartRemove = (product, hundleClick) => {
-    const ID = product.getAttribute('data-variant-id');
+    const ID = product.getAttribute('data-product-key');
     const price = +product.querySelector('.product-price').getAttribute('data-price-total');
     updateCart(ID, 0, 'update', hundleClick, price);
   }
 
   /* change quantity function */
   const cartQuantity = (product, hundleClick) => {
-    const ID = product.getAttribute('data-variant-id');
+    const ID = product.getAttribute('data-product-key');
     const price = +product.querySelector('.product-price').getAttribute('data-price-single');
     const quantityValue = +product.querySelector('.quantity .quantity__input').value;
 
     updateCart(ID, quantityValue, 'change', hundleClick, price);
   }
-
-  /* onLoad function */
-  (() => {
-    const hasProduct = cartProducts.some(product => product.variant_id === productGIFT);
-
-    // if (hasProduct) {
-    //const math = +window.free_gift_settings.price > cartCurrentPrice
-    //  ? +window.free_gift_settings.price - cartCurrentPrice : cartCurrentPrice - +window.free_gift_settings.price;
-    // }
-
-    if (cartCurrentPrice < threshold && hasProduct) {
-      console.log('onLoad: update')
-      updateCart(productGIFT, 0, 'update');
-    }
-
-    if (cartCurrentPrice > threshold && !hasProduct) {
-      console.log('onLoad: add')
-      updateCart(productGIFT, 1, 'add');
-    }
-
-    console.log('onLoad function')
-  })();
 
   /* onClick Elements function */
   cartDrawer.addEventListener('click', ({ target }) => {
@@ -201,6 +157,21 @@ document.addEventListener('DOMContentLoaded', () => {
       cartQuantity(product, target.getAttribute('name'));
     }
   });
+
+  /* onLoad function */
+  (() => {
+    if (window.free_gift_settings.action) {
+      const hasProduct = cartProducts.some(product => product.variant_id === productGIFT);
+
+      if (cartTotalPrice < threshold && hasProduct) {
+        updateCart(productGIFT, 0, 'update');
+      }
+
+      if (cartTotalPrice > threshold && !hasProduct) {
+        updateCart(productGIFT, 1, 'add');
+      }
+    }
+  })();
 
 });
 
