@@ -46,15 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let giftPriceDifference = 0;
     let percentBought = 100;
 
-    console.log('cartTotalPrice', cartTotalPrice)
-
     if (cartTotalPrice < threshold && !hasProduct) {
       giftPriceDifference = (threshold - cartTotalPrice).toFixed(2);
       percentBought = Math.floor((cartTotalPrice * 100) / threshold).toFixed(0);
     }
-
-    console.log('giftPriceDifference', giftPriceDifference)
-    console.log('percentBought', percentBought)
 
     cartDrawer.querySelector('.gift-price').innerHTML = `$${giftPriceDifference}`;
     cartDrawer.querySelector('.line-active').style.width = `${percentBought}%`;
@@ -75,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* Fetch */
   const updateCart = (id, quantity, action, hundleClick = false, price = 0) => {
-    console.log('=======================================================')
     const data = {
       "updates": {},
       "items": [],
@@ -96,22 +90,14 @@ document.addEventListener('DOMContentLoaded', () => {
       data['quantity'] = quantity;
     }
 
-    console.log('data:', data)
-
     fetch(`${window.Shopify.routes.root}cart/${action}.js`, { ...fetchConfig(), body: JSON.stringify(data) })
       .then(response => response.json())
       .then(response => {
-        console.log('response:', response);
         cartDrawer.classList.toggle('cart-is-empty', response.items.length === 0);
 
         getSectionInnerHTML(response.sections["cart-drawer-custom"]);
 
-        console.log('hundleClick', hundleClick)
-        console.log('window.free_gift_settings.action:', window.free_gift_settings.action)
-
         if (hundleClick && !window.free_gift_settings.action) return;
-
-        console.log(1)
 
         hundleClick === 'minus' && hundleClick !== 'remove' ? minusPrice = price : plusPrice = price;
         hundleClick === 'remove' && hundleClick !== 'minus' && hundleClick !== 'plus'
@@ -122,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
         cartProducts = response.items;
 
         if (response.items.length < 1) return;
-        console.log(2)
         updateGiftPrice(hundleClick);
       })
 
@@ -133,14 +118,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* remove product function */
   const cartRemove = (product, hundleClick) => {
-    const ID = product.getAttribute('data-variant-id');
+    const ID = product.getAttribute('data-product-key');
     const price = +product.querySelector('.product-price').getAttribute('data-price-total');
     updateCart(ID, 0, 'update', hundleClick, price);
   }
 
   /* change quantity function */
   const cartQuantity = (product, hundleClick) => {
-    const ID = product.getAttribute('data-variant-id');
+    const ID = product.getAttribute('data-product-key');
     const price = +product.querySelector('.product-price').getAttribute('data-price-single');
     const quantityValue = +product.querySelector('.quantity .quantity__input').value;
 
