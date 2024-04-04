@@ -272,9 +272,8 @@
 
     <script type="text/javascript">
       window.free_gift_settings = {
-        active: {% if settings.free_gift_active %}true{% else %}false{% endif %},
+        action: {% if settings.free_gift_active %}true{% else %}false{% endif %},
         product: {% if settings.free_gift_product %}{{ settings.free_gift_product.selected_or_first_available_variant.id }}{% else %}false{% endif %},
-        price: {% if settings.free_gift_product %}{{ settings.free_gift_product.price | money_without_currency }}{% else %}0{% endif %},
         threshold: "{{ settings.free_gift_threshold }}"
       };
 

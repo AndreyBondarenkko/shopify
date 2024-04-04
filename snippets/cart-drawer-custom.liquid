@@ -12,7 +12,7 @@
       {% assign difference = free_gift_threshold | minus: cart_total %}
       {% assign percent_bought = cart_total | times: 100 | divided_by: free_gift_threshold | floor %}
 
-      <div class="gift-wrap">
+      <div class="gift-wrap {% unless settings.free_gift_active %}hidden{% endunless %}">
         <div class="gift-title"> 
           {% if cart_total <= free_gift_threshold %}
             You are <span class="gift-price 1">${{ difference }}</span> away from getting a gift.

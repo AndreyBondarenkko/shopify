@@ -3192,6 +3192,10 @@ body.cart-opened .cart-drawer {
   overflow: hidden;
 }
 
+.cart-drawer .gift-wrap.hidden {
+  display: none;
+}
+
 .cart-drawer .gift-wrap .gift-title {
   font-family: 'Jost', sans-serif;
   font-weight: 600;
