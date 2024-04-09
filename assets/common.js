@@ -175,3 +175,111 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+
+/* ==========================
+  Product Slider
+========================== */
+document.addEventListener('DOMContentLoaded', () => {
+  const mainSlider = document.querySelector('#main-slider_init');
+  const thumbsSlider = document.querySelector('#thumbs-slider_init');
+  const variantGroup = document.querySelector('.variant-group-color');
+  const mainSliderGroup = {};
+  const thumbsSliderGroup = {}
+
+  window.productThumbsInit = new Swiper(thumbsSlider, {
+    slidesPerView: 5,
+  });
+
+  window.productSliderInit = new Swiper(mainSlider, {
+    spaceBetween: 10,
+    thumbs: {
+      swiper: window.productThumbsInit,
+    }
+  });
+
+  const createVariantObj = () => {
+    variantGroup.querySelectorAll('.fieldset-item').forEach(variantItem => {
+      mainSliderGroup[variantItem.dataset.value.trim()] = [];
+      thumbsSliderGroup[variantItem.dataset.value.trim()] = [];
+    });
+  }
+
+  const filterVariantImage = (slider, obj) => {
+    slider.forEach(slide => {
+      const imageAlt = slide.querySelector('img').getAttribute('alt').split(',');
+
+      if (imageAlt.length < 1) return;
+
+      imageAlt.forEach(item => {
+        const alt = item.toLocaleLowerCase().trim();
+        if (obj.hasOwnProperty(alt)) obj[alt].push(slide);
+        else for (let key in obj) obj[key].push(slide);
+      });
+    });
+  }
+
+  const replaceSlider = (variantChecked) => {
+    const mainSliderItemsWrap = mainSlider.querySelector('.swiper-wrapper');
+    const thumbsSliderItemsWrap = thumbsSlider.querySelector('.swiper-wrapper');
+
+    mainSliderItemsWrap.textContent = '';
+    window.productSliderInit.removeAllSlides();
+
+    thumbsSliderItemsWrap.textContent = '';
+    window.productThumbsInit.removeAllSlides();
+
+    mainSliderGroup[variantChecked].forEach(slide => mainSliderItemsWrap.appendChild(slide));
+    thumbsSliderGroup[variantChecked].forEach(slide => thumbsSliderItemsWrap.appendChild(slide));
+
+    const mainSliderItems = Array.from(mainSlider.querySelectorAll('#main-slider_init .swiper-slide'));
+    let mainSliderTo = 0;
+
+    for (let k = 0; k < mainSliderItems.length; k++) {
+      const array = mainSliderItems[k].querySelector('img').getAttribute('alt').split(',');
+      const result = array.findIndex(alt => alt.toLocaleLowerCase().trim() === variantChecked.toLocaleLowerCase().trim());
+
+      if (result !== -1) {
+        mainSliderTo = k;
+        break;
+      }
+    }
+
+    window.productSliderInit.update();
+    window.productSliderInit.slideTo(mainSliderTo !== -1 ? mainSliderTo : 0);
+    window.productSliderInit.navigation.init();
+
+    window.productThumbsInit.update();
+    window.productThumbsInit.slideTo(mainSliderTo !== -1 ? mainSliderTo : 0);
+    window.productThumbsInit.navigation.init();
+  }
+
+  const onFilterSlicer = () => {
+    console.log('click');
+    variantGroup.addEventListener('click', ({ target }) => {
+      if (target.closest('.fieldset-item') && !target.classList.contains('.item-checked')) {
+        const varianChecked = target.closest('.fieldset-item');
+        document.querySelector('.fieldset-item.item-checked').classList.remove('item-checked');
+        varianChecked.classList.add('item-checked');
+
+        replaceSlider(varianChecked.dataset.value)
+      }
+    });
+  }
+
+  const initFilterVariant = () => {
+    if (!variantGroup) return;
+
+    const mainSliderItems = mainSlider.querySelectorAll('#main-slider_init .swiper-slide');
+    const thumbsSliderItems = thumbsSlider.querySelectorAll('#thumbs-slider_init .swiper-slide');
+    const variantChecked = variantGroup.querySelector('.fieldset-item.item-checked');
+
+    createVariantObj();
+    filterVariantImage(mainSliderItems, mainSliderGroup);
+    filterVariantImage(thumbsSliderItems, thumbsSliderGroup);
+    onFilterSlicer();
+
+    replaceSlider(variantChecked.dataset.value);
+  }
+
+  initFilterVariant();
+});
