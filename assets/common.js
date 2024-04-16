@@ -253,18 +253,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const filterSlides = (sliderArray) => {
       return sliderArray.filter(slide => {
-        const alt = slide.querySelector('img').getAttribute('alt');
-        const variantIndicators = alt.includes('&&');
+        const alt = slide.querySelector('img').getAttribute('alt-indicator');
 
-        if (!variantIndicators) return false;
+        if (!alt.length) return false;
 
         const imageIndicator = alt
-          .split('&&')
-          .join(' ')
           .split(',')
           .map(item => item.toLowerCase().trim());
-
-        //slide.querySelector('img').setAttribute('alt', alt.split('&&')[0]);
 
         return variantsCheckedArray.every(checkedItem =>
           imageIndicator.includes(checkedItem.dataset.value.toLowerCase().trim())
@@ -277,10 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const thumbsSliderItemsWrap = thumbsSlider.querySelector('.swiper-wrapper');
 
       mainSliderItemsWrap.innerHTML = '';
-      window.productSliderInit.removeAllSlides();
-
       thumbsSliderItemsWrap.innerHTML = '';
-      window.productThumbsInit.removeAllSlides();
 
       if (sliderLength === 0) {
         mainSliderItemsWrap.append(createDefaultSlide(true));
@@ -304,11 +296,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const initializeOnLoad = () => {
       onLoadVariantFilter();
 
+      window.productSliderInit.removeAllSlides();
+      window.productThumbsInit.removeAllSlides();
+
       const galleryMain = filterSlides(mainSwiperItems);
       const galleryThumbs = filterSlides(thumbsSwiperItems);
       const sliderLength = galleryMain.length;
-
-      console.log(galleryMain);
 
       rerenderGallery(sliderLength, galleryMain, galleryThumbs)
     }
@@ -322,6 +315,10 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelector('#variants-group').addEventListener('click', ({ target }) => {
         if (target.closest('.fieldset-item') && !target.classList.contains('.item-checked')) {
           handleVariantFilter(target);
+
+          window.productSliderInit.removeAllSlides();
+          window.productThumbsInit.removeAllSlides();
+
           const galleryMain = filterSlides(mainSwiperItems);
           const galleryThumbs = filterSlides(thumbsSwiperItems);
           const sliderLength = galleryMain.length;

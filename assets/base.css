@@ -3680,6 +3680,10 @@ body.cart-opened .cart-drawer {
     padding: 0 0 0 40px;
   }
 
+  #single-product .main-slider .swiper-slide {
+    min-height: 500px;
+  }
+
   .variant-group .fieldset-item label:hover {
     box-shadow: 0 0 7px 0px #5dbe96;
     background: rgb(93 190 150 / 70%);

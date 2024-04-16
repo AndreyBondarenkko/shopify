@@ -29,8 +29,21 @@
           {%- for media in product.media -%}
             {% case media.media_type %}
               {% when 'image' %}
-                <div class="swiper-slide" data-slide-id={{ media.id }}>
-                  <img src="{{ media | img_url: 'master' }}" alt="{{ media.alt | escape }}" class="lazyload"
+                {% if media.alt contains '&&' %}
+                  {% assign alt_parts = media.alt | split: '&&' %}
+                  {% assign variant_indicator = alt_parts[1] | strip | escape %}
+                  {% assign alt = alt_parts[0] | strip | escape %}
+
+                  {% if alt.size < 1 %}
+                    {% assign alt = product.title | escape %}
+                  {% endif %}
+
+                {%  else %}
+                  {% assign alt = media.alt | escape %}
+                {% endif %}
+
+                <div class="swiper-slide" data-slide-id={{ media.id }} >
+                  <img src="{{ media | img_url: 'master' }}" alt="{{ alt }}" alt-indicator="{{ variant_indicator }}" class="lazyload"
                     data-src="{{ media | img_url: 'master' }}" data-sizes="auto"
                     data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
                     data-aspectratio="{{ media | img_url: 'master' }}">
@@ -47,9 +60,22 @@
           {%- for media in product.media -%}
             {% case media.media_type %}
               {% when 'image' %}
-                <div class="swiper-slide" data-slide-id={{ media.id }}>
+                {% if media.alt contains '&&' %}
+                  {% assign alt_parts = media.alt | split: '&&' %}
+                  {% assign variant_indicator = alt_parts[1] | strip | escape %}
+                  {% assign alt = alt_parts[0] | strip | escape %}
+
+                  {% if alt.size < 1 %}
+                    {% assign alt = product.title | escape %}
+                  {% endif %}
+
+                {%  else %}
+                  {% assign alt = media.alt | escape %}
+                {% endif %}
+
+                <div class="swiper-slide" data-slide-id={{ media.id }} >
                   <div class="swiper-slide-media">
-                    <img src="{{ media | img_url: 'compact' }}" alt="{{ media.alt | escape }}">
+                    <img src="{{ media | img_url: 'compact' }}" alt="{{ alt }}" alt-indicator="{{ variant_indicator }}">
                   </div>
                 </div>
             {% endcase %}
