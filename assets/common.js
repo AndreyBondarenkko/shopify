@@ -2,7 +2,16 @@
   Cart
 ========================== */
 document.addEventListener('DOMContentLoaded', () => {
-  const body = document.querySelector('body');
+  /* ==========================
+    Common Variables
+  ========================== */
+  const HTML = document.querySelector('html');
+  const BODY = document.querySelector('body');
+
+
+  /* ==========================
+    Cart
+  ========================== */
   const cartDrawer = document.querySelector('#cart-drawer');
   const cartPriceLayout = cartDrawer.querySelector('#cart-totals');
   const cartProductsLayout = cartDrawer.querySelector('#product-items');
@@ -11,9 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const isCloseCart = cartDrawer.querySelector('.cart-close');
   const isOutCart = document.querySelector('.cart-drawer-overflow');
 
-  isOpenCart.addEventListener('click', () => body.classList.add('cart-opened'));
-  isCloseCart.addEventListener('click', () => body.classList.remove('cart-opened'));
-  isOutCart.addEventListener('click', () => body.classList.remove('cart-opened'));
+  isOpenCart.addEventListener('click', () => BODY.classList.add('cart-opened'));
+  isCloseCart.addEventListener('click', () => BODY.classList.remove('cart-opened'));
+  isOutCart.addEventListener('click', () => BODY.classList.remove('cart-opened'));
 
   /* ==== Gift ==== */
   let plusPrice = 0;
@@ -90,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
       data['quantity'] = quantity;
     }
 
-    fetch(`${window.Shopify.routes.root}cart/${action}.js`, { ...fetchConfig(), body: JSON.stringify(data) })
+    fetch(`${window.Shopify.routes.root}cart/${action}.js`, { ...fetchConfig(), BODY: JSON.stringify(data) })
       .then(response => response.json())
       .then(response => {
         cartDrawer.classList.toggle('cart-is-empty', response.items.length === 0);
@@ -173,113 +182,224 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })();
 
-});
+  /* ==========================
+    Product Slider
+  ========================== */
+  if (BODY.classList.contains('page-product')) {
+    const mainSlider = document.querySelector('#main-slider_init');
+    const thumbsSlider = document.querySelector('#thumbs-slider_init');
+    const variantsWrapper = document.querySelectorAll('#variants-group .variant-group');
+    const imageDefault = document.querySelector('.single-product-item.product-media-wrap').getAttribute('data-default-image');
 
+    const mainSwiperItems = [];
+    const thumbsSwiperItems = [];
+    const variantsCheckedArray = [];
 
-/* ==========================
-  Product Slider
-========================== */
-document.addEventListener('DOMContentLoaded', () => {
-  const mainSlider = document.querySelector('#main-slider_init');
-  const thumbsSlider = document.querySelector('#thumbs-slider_init');
-  const variantGroup = document.querySelector('.variant-group-color');
-  const mainSliderGroup = {};
-  const thumbsSliderGroup = {}
-
-  window.productThumbsInit = new Swiper(thumbsSlider, {
-    slidesPerView: 5,
-  });
-
-  window.productSliderInit = new Swiper(mainSlider, {
-    spaceBetween: 10,
-    thumbs: {
-      swiper: window.productThumbsInit,
-    }
-  });
-
-  const createVariantObj = () => {
-    variantGroup.querySelectorAll('.fieldset-item').forEach(variantItem => {
-      mainSliderGroup[variantItem.dataset.value.trim()] = [];
-      thumbsSliderGroup[variantItem.dataset.value.trim()] = [];
+    window.productThumbsInit = new Swiper(thumbsSlider, {
+      slidesPerView: 3,
+      breakpoints: {
+        768: {
+          slidesPerView: 5,
+        }
+      }
     });
-  }
 
-  const filterVariantImage = (slider, obj) => {
-    slider.forEach(slide => {
-      const imageAlt = slide.querySelector('img').getAttribute('alt').split(',');
+    window.productSliderInit = new Swiper(mainSlider, {
+      spaceBetween: 10,
+      thumbs: {
+        swiper: window.productThumbsInit,
+      }
+    });
 
-      if (imageAlt.length < 1) return;
+    const createDefaultSlide = (mainSlide = false) => {
+      const createDiv = document.createElement('div');
+      createDiv.classList.add('swiper-slide');
 
-      imageAlt.forEach(item => {
-        const alt = item.toLocaleLowerCase().trim();
-        if (obj.hasOwnProperty(alt)) obj[alt].push(slide);
-        else for (let key in obj) obj[key].push(slide);
+      const createImg = document.createElement('img');
+      createImg.setAttribute('src', imageDefault)
+
+      if (mainSlide) {
+        createDiv.append(createImg)
+      }
+
+      else {
+        const createImageWrap = document.createElement('div');
+        createImageWrap.classList.add('swiper-slide-media');
+        createImageWrap.append(createImg)
+        createDiv.append(createImageWrap);
+      }
+
+      return createDiv;
+    }
+
+    const handleVariantFilter = (target) => {
+      const parent = target.closest('.variant-group')
+      parent.querySelector('.fieldset-item.item-checked')?.classList.remove('item-checked');
+      target.closest('.fieldset-item').classList.add('item-checked');
+
+      variantsCheckedArray.splice(0, variantsCheckedArray.length);
+      variantsWrapper.forEach(variant => {
+        const checked = variant.querySelector('.fieldset-item.item-checked');
+        variantsCheckedArray.push(checked);
       });
-    });
-  }
+    }
 
-  const replaceSlider = (variantChecked) => {
-    const mainSliderItemsWrap = mainSlider.querySelector('.swiper-wrapper');
-    const thumbsSliderItemsWrap = thumbsSlider.querySelector('.swiper-wrapper');
+    const onLoadVariantFilter = () => {
+      variantsWrapper.forEach(variant => {
+        const checked = variant.querySelector('.fieldset-item.item-checked');
+        variantsCheckedArray.push(checked);
+      });
+    }
 
-    mainSliderItemsWrap.textContent = '';
-    window.productSliderInit.removeAllSlides();
+    const filterSlides = (sliderArray) => {
+      return sliderArray.filter(slide => {
+        const alt = slide.querySelector('img').getAttribute('alt-indicator');
 
-    thumbsSliderItemsWrap.textContent = '';
-    window.productThumbsInit.removeAllSlides();
+        if (!alt.length) return false;
 
-    mainSliderGroup[variantChecked].forEach(slide => mainSliderItemsWrap.appendChild(slide));
-    thumbsSliderGroup[variantChecked].forEach(slide => thumbsSliderItemsWrap.appendChild(slide));
+        const imageIndicator = alt
+          .split(',')
+          .map(item => item.toLowerCase().trim());
 
-    const mainSliderItems = Array.from(mainSlider.querySelectorAll('#main-slider_init .swiper-slide'));
-    let mainSliderTo = 0;
+        return variantsCheckedArray.every(checkedItem =>
+          imageIndicator.includes(checkedItem.dataset.value.toLowerCase().trim())
+        );
+      });
+    };
 
-    for (let k = 0; k < mainSliderItems.length; k++) {
-      const array = mainSliderItems[k].querySelector('img').getAttribute('alt').split(',');
-      const result = array.findIndex(alt => alt.toLocaleLowerCase().trim() === variantChecked.toLocaleLowerCase().trim());
+    const rerenderGallery = (sliderLength, galleryMain, galleryThumbs) => {
+      const mainSliderItemsWrap = mainSlider.querySelector('.swiper-wrapper');
+      const thumbsSliderItemsWrap = thumbsSlider.querySelector('.swiper-wrapper');
 
-      if (result !== -1) {
-        mainSliderTo = k;
-        break;
+      mainSliderItemsWrap.innerHTML = '';
+      thumbsSliderItemsWrap.innerHTML = '';
+
+      if (sliderLength === 0) {
+        mainSliderItemsWrap.append(createDefaultSlide(true));
+        thumbsSliderItemsWrap.append(createDefaultSlide());
+      }
+
+      if (sliderLength !== 0) {
+        galleryMain.forEach(slide => mainSliderItemsWrap.append(slide));
+        galleryThumbs.forEach(slide => thumbsSliderItemsWrap.append(slide));
+
+        window.productSliderInit.update();
+        window.productSliderInit.slideTo(0);
+        window.productSliderInit.navigation.init();
+
+        window.productThumbsInit.update();
+        window.productThumbsInit.slideTo(0);
+        window.productThumbsInit.navigation.init();
       }
     }
 
-    window.productSliderInit.update();
-    window.productSliderInit.slideTo(mainSliderTo !== -1 ? mainSliderTo : 0);
-    window.productSliderInit.navigation.init();
+    const initializeOnLoad = () => {
+      onLoadVariantFilter();
 
-    window.productThumbsInit.update();
-    window.productThumbsInit.slideTo(mainSliderTo !== -1 ? mainSliderTo : 0);
-    window.productThumbsInit.navigation.init();
+      window.productSliderInit.removeAllSlides();
+      window.productThumbsInit.removeAllSlides();
+
+      const galleryMain = filterSlides(mainSwiperItems);
+      const galleryThumbs = filterSlides(thumbsSwiperItems);
+      const sliderLength = galleryMain.length;
+
+      rerenderGallery(sliderLength, galleryMain, galleryThumbs)
+    }
+
+    const initializeVariantFilter = () => {
+      if (variantsWrapper.length < 1 && mainSlider.querySelectorAll('.swiper-slide').length !== 0) return;
+
+      Array.from(mainSlider.querySelectorAll('.swiper-slide')).forEach(slide => mainSwiperItems.push(slide));
+      Array.from(thumbsSlider.querySelectorAll('.swiper-slide')).forEach(slide => thumbsSwiperItems.push(slide));
+
+      document.querySelector('#variants-group').addEventListener('click', ({ target }) => {
+        if (target.closest('.fieldset-item') && !target.classList.contains('.item-checked')) {
+          handleVariantFilter(target);
+
+          window.productSliderInit.removeAllSlides();
+          window.productThumbsInit.removeAllSlides();
+
+          const galleryMain = filterSlides(mainSwiperItems);
+          const galleryThumbs = filterSlides(thumbsSwiperItems);
+          const sliderLength = galleryMain.length;
+
+          rerenderGallery(sliderLength, galleryMain, galleryThumbs)
+        }
+      });
+
+      //OnLoad 
+      initializeOnLoad();
+    }
+
+    initializeVariantFilter()
   }
 
-  const onFilterSlicer = () => {
-    console.log('click');
-    variantGroup.addEventListener('click', ({ target }) => {
-      if (target.closest('.fieldset-item') && !target.classList.contains('.item-checked')) {
-        const varianChecked = target.closest('.fieldset-item');
-        document.querySelector('.fieldset-item.item-checked').classList.remove('item-checked');
-        varianChecked.classList.add('item-checked');
+  /* ==========================
+    можна переробити під SKY
+  ========================== */
+  // const filterVariantImage = (slider, obj) => {
+  //   slider.forEach(slide => {
+  //     const imageAlt = slide.querySelector('img').getAttribute('alt').split(',');
 
-        replaceSlider(varianChecked.dataset.value)
-      }
-    });
-  }
+  //     if (imageAlt.length < 1) return;
 
-  const initFilterVariant = () => {
-    if (!variantGroup) return;
+  //     imageAlt.forEach(item => {
+  //       const alt = item.toLocaleLowerCase().trim();
+  //       if (obj.hasOwnProperty(alt)) obj[alt].push(slide);
+  //       else for (let key in obj) obj[key].push(slide);
+  //     });
+  //   });
+  // }
 
-    const mainSliderItems = mainSlider.querySelectorAll('#main-slider_init .swiper-slide');
-    const thumbsSliderItems = thumbsSlider.querySelectorAll('#thumbs-slider_init .swiper-slide');
-    const variantChecked = variantGroup.querySelector('.fieldset-item.item-checked');
+  // const replaceSlider = (variantChecked) => {
+  //   const mainSliderItemsWrap = mainSlider.querySelector('.swiper-wrapper');
+  //   const thumbsSliderItemsWrap = thumbsSlider.querySelector('.swiper-wrapper');
 
-    createVariantObj();
-    filterVariantImage(mainSliderItems, mainSliderGroup);
-    filterVariantImage(thumbsSliderItems, thumbsSliderGroup);
-    onFilterSlicer();
+  //   mainSliderItemsWrap.textContent = '';
+  //   window.productSliderInit.removeAllSlides();
 
-    replaceSlider(variantChecked.dataset.value);
-  }
+  //   thumbsSliderItemsWrap.textContent = '';
+  //   window.productThumbsInit.removeAllSlides();
 
-  initFilterVariant();
+  //   mainSliderGroup[variantChecked].forEach(slide => mainSliderItemsWrap.appendChild(slide));
+  //   thumbsSliderGroup[variantChecked].forEach(slide => thumbsSliderItemsWrap.appendChild(slide));
+
+  //   const mainSliderItems = Array.from(mainSlider.querySelectorAll('#main-slider_init .swiper-slide'));
+  //   let mainSliderTo = 0;
+
+  //   for (let k = 0; k < mainSliderItems.length; k++) {
+  //     const array = mainSliderItems[k].querySelector('img').getAttribute('alt').split(',');
+  //     const result = array.findIndex(alt => alt.toLocaleLowerCase().trim() === variantChecked.toLocaleLowerCase().trim());
+
+  //     if (result !== -1) {
+  //       mainSliderTo = k;
+  //       break;
+  //     }
+  //   }
+
+  //   window.productSliderInit.update();
+  //   window.productSliderInit.slideTo(mainSliderTo !== -1 ? mainSliderTo : 0);
+  //   window.productSliderInit.navigation.init();
+
+  //   window.productThumbsInit.update();
+  //   window.productThumbsInit.slideTo(mainSliderTo !== -1 ? mainSliderTo : 0);
+  //   window.productThumbsInit.navigation.init();
+  // }
+
+  // const initFilterVariant = () => {
+  //   if (!variantGroup) return;
+
+  //   const mainSliderItems = mainSlider.querySelectorAll('#main-slider_init .swiper-slide');
+  //   const thumbsSliderItems = thumbsSlider.querySelectorAll('#thumbs-slider_init .swiper-slide');
+  //   const variantChecked = variantGroup.querySelector('.fieldset-item.item-checked');
+
+  //   createVariantObj();
+  //   filterVariantImage(mainSliderItems, mainSliderGroup);
+  //   filterVariantImage(thumbsSliderItems, thumbsSliderGroup);
+  //   onFilterSlicer();
+
+  //   replaceSlider(variantChecked.dataset.value);
+  // }
+
+  // initFilterVariant();
 });

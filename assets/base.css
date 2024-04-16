@@ -3544,14 +3544,14 @@ body.cart-opened .cart-drawer {
 }
 
 #single-product .product-media-wrap {
-  width: 600px;
-  min-width: 600px;
+  width: 100%;
+  min-width: 100%;
 }
 
 #single-product .single-product-info {
-  width: calc(100% - 600px);
-  min-width: calc(100% - 600px);
-  padding-left: 50px;
+  width: 100%;
+  min-width: 100%;
+  padding: 20px 0 0 0;
 }
 
 #single-product .main-slider {
@@ -3579,8 +3579,8 @@ body.cart-opened .cart-drawer {
 }
 
 .thumbs-slider:not(.swiper-initialized) .swiper-slide {
-  width: 20%;
-  min-width: 20%;
+  width: 33%;
+  min-width: 33%;
 }
 
 .thumbs-slider .swiper-slide {
@@ -3626,7 +3626,8 @@ body.cart-opened .cart-drawer {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
+  column-gap: 10px;
+  row-gap: 7px;
 }
 
 .variant-group .fieldset-item {
@@ -3650,19 +3651,60 @@ body.cart-opened .cart-drawer {
 
 .variant-group .fieldset-item label {
   letter-spacing: 1.5px;
-  font-size: 14px;
+  font-size: 13px;
   margin: 0;
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 4px 7px;
   border-radius: 7px;
   transition: all .3s ease-in-out;
   border: 2px solid #5dbe96;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .thumbs-slider:not(.swiper-initialized) .swiper-slide {
+    width: 20%;
+    min-width: 20%;
+  }
 }
 
 @media (min-width: 992px) {
+  #single-product .product-media-wrap {
+    width: 500px;
+    min-width: 500px;
+  }
+
+  #single-product .single-product-info {
+    width: calc(100% - 500px);
+    min-width: calc(100% - 500px);
+    padding: 0 0 0 40px;
+  }
+
+  #single-product .main-slider .swiper-slide {
+    min-height: 500px;
+  }
+
   .variant-group .fieldset-item label:hover {
     box-shadow: 0 0 7px 0px #5dbe96;
     background: rgb(93 190 150 / 70%);
     color: #ffff;
+  }
+}
+
+@media (min-width: 1200px) {
+  #single-product .product-media-wrap {
+    width: 600px;
+    min-width: 600px;
+  }
+
+  #single-product .single-product-info {
+    width: calc(100% - 600px);
+    min-width: calc(100% - 600px);
+    padding: 0 0 0 50px;
+  }
+
+  .variant-group .fieldset-item label {
+    font-size: 14px;
+    padding: 5px 10px;
   }
 }

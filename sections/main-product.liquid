@@ -23,14 +23,27 @@
 <section id="MainProduct-{{ section.id }}" class="section-{{ section.id }}-padding" data-section="{{ section.id }}">
   <div class="container">
   <div id="single-product" class="product single-product-layout">
-    <div class="single-product-item product-media-wrap">
+    <div class="single-product-item product-media-wrap" data-default-image="{{ 'default-image.jpg' | asset_url }}">
       <div class="swiper-container main-slider" id="main-slider_init">
         <div class="swiper-wrapper">
           {%- for media in product.media -%}
             {% case media.media_type %}
               {% when 'image' %}
-                <div class="swiper-slide">
-                  <img src="{{ media | img_url: 'master' }}" alt="{{ media.alt | escape }}" class="lazyload"
+                {% if media.alt contains '&&' %}
+                  {% assign alt_parts = media.alt | split: '&&' %}
+                  {% assign variant_indicator = alt_parts[1] | strip | escape %}
+                  {% assign alt = alt_parts[0] | strip | escape %}
+
+                  {% if alt.size < 1 %}
+                    {% assign alt = product.title | escape %}
+                  {% endif %}
+
+                {%  else %}
+                  {% assign alt = media.alt | escape %}
+                {% endif %}
+
+                <div class="swiper-slide" data-slide-id={{ media.id }} >
+                  <img src="{{ media | img_url: 'master' }}" alt="{{ alt }}" alt-indicator="{{ variant_indicator }}" class="lazyload"
                     data-src="{{ media | img_url: 'master' }}" data-sizes="auto"
                     data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
                     data-aspectratio="{{ media | img_url: 'master' }}">
@@ -47,9 +60,22 @@
           {%- for media in product.media -%}
             {% case media.media_type %}
               {% when 'image' %}
-                <div class="swiper-slide">
+                {% if media.alt contains '&&' %}
+                  {% assign alt_parts = media.alt | split: '&&' %}
+                  {% assign variant_indicator = alt_parts[1] | strip | escape %}
+                  {% assign alt = alt_parts[0] | strip | escape %}
+
+                  {% if alt.size < 1 %}
+                    {% assign alt = product.title | escape %}
+                  {% endif %}
+
+                {%  else %}
+                  {% assign alt = media.alt | escape %}
+                {% endif %}
+
+                <div class="swiper-slide" data-slide-id={{ media.id }} >
                   <div class="swiper-slide-media">
-                    <img src="{{ media | img_url: 'compact' }}" alt="{{ media.alt | escape }}">
+                    <img src="{{ media | img_url: 'compact' }}" alt="{{ alt }}" alt-indicator="{{ variant_indicator }}">
                   </div>
                 </div>
             {% endcase %}
@@ -137,25 +163,22 @@
                   <span class="visually-hidden">{{ 'products.product.quantity.decrease' | t: product: product.title | escape }}</span>
                   {% render 'icon-minus' %}
                 </button>
-                <input class="quantity__input"
-                    type="number"
-                    name="quantity"
-                    id="Quantity-{{ section.id }}"
-                    min="1"
-                    value="1"
-                    form="{{ product_form_id }}"
-                  >
+                <input class="quantity__input" type="number"
+                    name="quantity" id="Quantity-{{ section.id }}"
+                    min="1" value="1" form="{{ product_form_id }}">
                 <button class="quantity__button no-js-hidden" name="plus" type="button">
                   <span class="visually-hidden">{{ 'products.product.quantity.increase' | t: product: product.title | escape }}</span>
                   {% render 'icon-plus' %}
                 </button>
               </quantity-input>
             </div>
+            
           {%- when 'popup' -%}
               <modal-opener class="product-popup-modal__opener no-js-hidden quick-add-hidden" data-modal="#PopupModal-{{ block.id }}" {{ block.shopify_attributes }}>
                 <button id="ProductPopup-{{ block.id }}" class="product-popup-modal__button link" type="button" aria-haspopup="dialog">{{ block.settings.text | default: block.settings.page.title }}</button>
               </modal-opener>
               <a href="{{ block.settings.page.url }}" class="product-popup-modal__button link no-js">{{ block.settings.text }}</a>
+          
           {%- when 'share' -%}
             <share-button id="Share-{{ section.id }}" class="share-button quick-add-hidden" {{ block.shopify_attributes }}>
               <button class="share-button__button hidden">
@@ -196,7 +219,8 @@
           
             {%- when 'variant_picker' -%}
               {%- unless product.has_only_default_variant -%}
-                <variant-radios class="no-js-hidden" data-section="{{ section.id }}" data-url="{{ product.url }}" {{ block.shopify_attributes }}>
+                <variant-radios class="no-js-hidden" data-section="{{ section.id }}" id="variants-group" data-url="{{ product.url }}" {{ block.shopify_attributes }}>
+                  
                   {%- for option in product.options_with_values -%}
                     <div class="variant-group variant-group-{{ option.name | downcase }} {{ block.settings.use_picker_color }}" data-variant="{{ option.name }}">
                       <div class="item-label variant-label">{{ option.name }}</div>
@@ -206,12 +230,13 @@
                             <input type="radio" id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
                                   name="{{ option.name }}" value="{{ value | escape }}" form="{{ product_form_id }}"
                               {% if option.selected_value == value %}checked{% endif %}>
-                            <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" data-picker={{ product.selected_or_first_available_variant.metafields.custom.variant_picker.value  }}>{{ value }}</label>
+                            <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">{{ value }}</label>
                           </div>
                         {%- endfor -%}
                       </fieldset>
                     </div>
                   {%- endfor -%}
+
                   <script type="application/json">{{ product.variants | json }}</script>
                 </variant-radios>
               {%- endunless -%}
