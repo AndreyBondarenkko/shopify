@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "image_banner": {
@@ -21,7 +30,7 @@
           "type": "buttons",
           "settings": {
             "button_label_1": "Shop all",
-            "button_link_1": "shopify:\/\/collections\/all",
+            "button_link_1": "shopify://collections/all",
             "button_style_secondary_1": true,
             "button_label_2": "",
             "button_link_2": "",
@@ -54,14 +63,14 @@
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "<p>Talk about your brand<\/p>",
+            "heading": "<p>Talk about your brand</p>",
             "heading_size": "h1"
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.<\/p>"
+            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
           }
         }
       },
@@ -109,10 +118,10 @@
       "type": "apps",
       "blocks": {
         "a562b2a6-63d5-4d0c-b0d2-4992bf58eac8": {
-          "type": "shopify:\/\/apps\/xo-gallery\/blocks\/xo-gallery\/e61dfbaa-1a75-4e4e-bffc-324f17325251",
+          "type": "shopify://apps/xo-gallery/blocks/xo-gallery/e61dfbaa-1a75-4e4e-bffc-324f17325251",
           "settings": {
-            "type": "gallery",
-            "id": 1
+            "id": 1,
+            "mid": ""
           }
         }
       },
@@ -166,7 +175,7 @@
       "settings": {
         "heading": "",
         "heading_size": "h1",
-        "video_url": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc",
+        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
         "description": "",
         "full_width": false,
         "color_scheme": "background-1",
@@ -181,7 +190,7 @@
           "type": "column",
           "settings": {
             "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
             "link_label": "",
             "link": ""
           }
@@ -190,7 +199,7 @@
           "type": "column",
           "settings": {
             "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
             "link_label": "",
             "link": ""
           }
@@ -199,7 +208,7 @@
           "type": "column",
           "settings": {
             "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
             "link_label": "",
             "link": ""
           }
@@ -231,10 +240,10 @@
       "type": "apps",
       "blocks": {
         "ba629b9e-3369-4b05-b32e-b1f9b8851723": {
-          "type": "shopify:\/\/apps\/xo-gallery\/blocks\/xo-gallery\/e61dfbaa-1a75-4e4e-bffc-324f17325251",
+          "type": "shopify://apps/xo-gallery/blocks/xo-gallery/e61dfbaa-1a75-4e4e-bffc-324f17325251",
           "settings": {
-            "type": "gallery",
-            "id": 2
+            "id": 2,
+            "mid": ""
           }
         }
       },
@@ -261,6 +270,16 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "custom_liquid_XFiKqK": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<div class=\"calconic-calculator\" data-calculatorid=\"5f1ae1faba35a40029c2bc2a\"></div>\n <script>\n   (function() { var qs,j,q,s,d=document, gi=d.getElementById,\n ce=d.createElement, gt=d.getElementsByTagName,\n id=\"calconic_\", b=\"https://cdn.calconic.com/static/js/\";\n if(!gi.call(d,id)) { j=ce.call(d,\"script\"); j.id=id; j.type=\"text/javascript\"; j.async=true;\n j.dataset.calconic=true;\n j.src=b+\"calconic.min.js\"; q=gt.call(d,\"script\")[0]; q.parentNode.insertBefore(j,q) }\n})();\n  </script>",
+        "color_scheme": "background-1",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
@@ -272,6 +291,7 @@
     "video",
     "multicolumn",
     "1679332918c8b1bbf9",
-    "1658839316f1cd239d"
+    "1658839316f1cd239d",
+    "custom_liquid_XFiKqK"
   ]
 }
