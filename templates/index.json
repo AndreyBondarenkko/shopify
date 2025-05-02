@@ -275,7 +275,7 @@
       "type": "custom-liquid",
       "name": "t:sections.custom-liquid.presets.name",
       "settings": {
-        "custom_liquid": "<div class=\"calconic-calculator\" data-calculatorid=\"5f1ae1faba35a40029c2bc2a\"></div>\n <script>\n   (function() { var qs,j,q,s,d=document, gi=d.getElementById,\n ce=d.createElement, gt=d.getElementsByTagName,\n id=\"calconic_\", b=\"https://cdn.calconic.com/static/js/\";\n if(!gi.call(d,id)) { j=ce.call(d,\"script\"); j.id=id; j.type=\"text/javascript\"; j.async=true;\n j.dataset.calconic=true;\n j.src=b+\"calconic.min.js\"; q=gt.call(d,\"script\")[0]; q.parentNode.insertBefore(j,q) }\n})();\n  </script>",
+        "custom_liquid": "<div class=\"calconic-calculator\"  data-calculatorid=\"6814d219a23b6b002a320f7b\"></div>\n    <script>\n          (function() { var qs,j,q,s,d=document, gi=d.getElementById,\n  ce=d.createElement, gt=d.getElementsByTagName,\n  id=\"calconic_\", b=\"https://cdn.calconic.com/static/js/\";\n  if(!gi.call(d,id)) { j=ce.call(d,\"script\"); j.id=id; j.type=\"text/javascript\"; j.async=true;\n  j.dataset.calconic=true;\n  j.src=b+\"calconic.min.js\"; q=gt.call(d,\"script\")[0]; q.parentNode.insertBefore(j,q) }\n})();\n        </script>",
         "color_scheme": "background-1",
         "padding_top": 40,
         "padding_bottom": 52
