@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "free_gift_active": true,
@@ -118,8 +127,7 @@
         "block_order": [
           "announcement-bar-0"
         ],
-        "settings": {
-        }
+        "settings": {}
       },
       "header": {
         "type": "header",
@@ -158,7 +166,7 @@
             "type": "text",
             "settings": {
               "heading": "Our mission",
-              "subtext": "<p>Share contact information, store details, and brand content with your customers.<\/p>"
+              "subtext": "<p>Share contact information, store details, and brand content with your customers.</p>"
             }
           }
         },
@@ -195,20 +203,28 @@
         }
       }
     },
-    "content_for_index": [
-
-    ],
+    "content_for_index": [],
     "blocks": {
       "14684659138027382045": {
-        "type": "shopify:\/\/apps\/xo-gallery\/blocks\/xo-gallery-scripts\/e61dfbaa-1a75-4e4e-bffc-324f17325251",
+        "type": "shopify://apps/xo-gallery/blocks/xo-gallery-scripts/e61dfbaa-1a75-4e4e-bffc-324f17325251",
         "disabled": false,
-        "settings": {
-        }
+        "settings": {}
       },
       "7770194999415187106": {
-        "type": "shopify:\/\/apps\/xo-gallery\/blocks\/xo-gallery-seo\/e61dfbaa-1a75-4e4e-bffc-324f17325251",
+        "type": "shopify://apps/xo-gallery/blocks/xo-gallery-seo/e61dfbaa-1a75-4e4e-bffc-324f17325251",
+        "disabled": false,
+        "settings": {}
+      },
+      "124348908681409149": {
+        "type": "shopify://apps/simple-bundles-kits/blocks/simple-bundles-v2/e553276b-36b2-446d-b80a-aa47fe5f96ac",
         "disabled": false,
         "settings": {
+          "select_placeholder": "Please select an option",
+          "disable_oos_options": true,
+          "show_price_variance": true,
+          "rank_options_by_price_diff": true,
+          "custom_css": "",
+          "custom_js": ""
         }
       }
     }
@@ -330,8 +346,7 @@
           "block_order": [
             "announcement-bar-0"
           ],
-          "settings": {
-          }
+          "settings": {}
         },
         "header": {
           "type": "header",
@@ -369,7 +384,7 @@
               "type": "text",
               "settings": {
                 "heading": "Our mission",
-                "subtext": "<p>Share contact information, store details, and brand content with your customers.<\/p>"
+                "subtext": "<p>Share contact information, store details, and brand content with your customers.</p>"
               }
             }
           },
